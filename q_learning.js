@@ -16,13 +16,9 @@ class Coordinate {
 var q = startQ();
 var grid = startMap();
 
-prinQ();
-
-var numEpisodes = 100;
+var numEpisodes = 100000;
 var maxStepsPerEpisode = 100;
 var learningRate = 0.5;
-var discountRate = 0.99;
-
 var explorationRate = 0.3
 
 function startCoordenate() {
@@ -119,21 +115,6 @@ function getReward(currentCoordinate) {
     return -1;
 }
 
-function takeOneStep(currentCoordinate, action) {
-    var nextCoordinate = move(currentCoordinate, action);
-
-    var reward = getReward(nextCoordinate);
-
-    var nextState = currentCoordinate;
-
-    if (nextCoordinate.Y < grid.length && nextCoordinate.X < grid[nextCoordinate.Y].le)
-        nextState = grid[nextCoordinate.Y][nextCoordinate.X];
-    else
-        nextCoordinate = currentCoordinate;
-
-    return { nextCoorditate: nextCoordinate, reward: reward, done: nextState === DESIRED_STATE };
-}
-
 function range(start, end) {
     var ans = [];
     for (let i = start; i <= end; i++) {
@@ -182,6 +163,23 @@ function getRandomAction(currentCoordinate) {
     return possibleActions[Math.floor(Math.random() * actionRangeEnd)];
 }
 
+function takeOneStep(currentCoordinate, action) {
+    var nextCoordinate = move(currentCoordinate, action);
+
+    var reward = getReward(nextCoordinate);
+
+    var nextState = currentCoordinate;
+
+    var invalidPath = false;
+
+    if (nextCoordinate.X < 0 || nextCoordinate.Y < 0 || nextCoordinate.Y > 4 || nextCoordinate.X > 9)
+        invalidPath = true;
+    else
+        nextState = grid[nextCoordinate.Y][nextCoordinate.X];
+
+    return { nextCoorditate: nextCoordinate, reward: reward, done: nextState === DESIRED_STATE, invalidPath: invalidPath };
+}
+
 for (episode in range(1, numEpisodes)) {
     var coordinate = startCoordenate();
 
@@ -209,21 +207,23 @@ for (episode in range(1, numEpisodes)) {
 
         var stepResult = takeOneStep(coordinate, action);
 
-        var nextState = grid[stepResult.nextCoorditate.Y][stepResult.nextCoorditate.X];
+        if (stepResult.invalidPath) {
+            q[state][action] = stepResult.reward;
+            break;
+        }
 
-        var reward = stepResult.reward;
+        var nextState = grid[stepResult.nextCoorditate.Y][stepResult.nextCoorditate.X];
 
         done = stepResult.done;
 
-        q[state, action] = q[state][action] + learningRate * Math.max.apply(null, q[nextState]);
+        q[state][action] = stepResult.reward + (learningRate * Math.max.apply(null, q[nextState]));
 
         coordinate = stepResult.nextCoorditate;
+        state = nextState;
 
         if (done)
             break;
     }
-
-    console.log(episode)
 }
 
 prinQ();
