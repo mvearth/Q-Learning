@@ -174,14 +174,12 @@ for (episode in range(1, numEpisodes)) {
 
         var nextState = grid[stepResult.nextCoorditate.Y][stepResult.nextCoorditate.X];
 
-        done = stepResult.done;
-
         q[state][action] = stepResult.reward + (learningRate * Math.max.apply(null, q[nextState]));
 
         coordinate = stepResult.nextCoorditate;
         state = nextState;
 
-        if (done)
+        if (stepResult.done)
             break;
     }
 }
