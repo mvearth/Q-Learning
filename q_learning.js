@@ -157,9 +157,10 @@ for (episode in range(1, numEpisodes)) {
             var maxValue = Math.max.apply(null, q[state])
 
             for (var i = 0; i < q[state].length; i++) {
-                if (q[state][i] === maxValue)
+                if (q[state][i] === maxValue){
                     action = i;
-                break;
+                    break;
+                }
             }
         }
         else
