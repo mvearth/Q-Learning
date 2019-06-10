@@ -3,7 +3,7 @@ const SOUTH = 1;
 const EAST = 2;
 const WEST = 3;
 
-const BLACK_SPOTS = [7, 10, 14, 19, 20, 21, 24, 27, 30, 31, 37, 39, 40, 41];
+const BLACK_SPOTS = [7, 10, 11, 14, 19, 20, 21, 24, 27, 30, 31, 37, 39, 40, 41];
 const DESIRED_STATE = 50;
 
 class Coordinate {
