@@ -1,12 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="wth=device-wth, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Q-Learning</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
     <script src="q_learning.js"></script>
+
+    <div class="jumbotron">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm py-2 px-md-3 text-center dark-blue-spot">
+                    5
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center dark-blue-spot">
+                    6
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center dark-blue-spot">
+                    15
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center dark-blue-spot">
+                    16
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center dark-blue-spot">
+                    25
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center dark-blue-spot">
+                    26
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center dark-blue-spot">
+                    35
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center dark-blue-spot">
+                    36
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center dark-blue-spot">
+                    45
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center dark-blue-spot">
+                    46
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    4
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    7
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    14
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    17
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    24
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    27
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    34
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    37
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    44
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    47
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm py-2 px-md-3 text-center light-blue-spot">
+                    3
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center light-blue-spot">
+                    8
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center light-blue-spot">
+                    13
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center light-blue-spot">
+                    18
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center light-blue-spot">
+                    23
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center light-blue-spot">
+                    28
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center light-blue-spot">
+                    33
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center light-blue-spot">
+                    38
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center light-blue-spot">
+                    43
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center light-blue-spot">
+                    48
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    2
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    9
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    12
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    19
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    22
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    29
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    32
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    39
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    42
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center blue-spot">
+                    49
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm py-2 px-md-3 text-center start-state">
+                    1
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    10
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    11
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    20
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    21
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    30
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    31
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    40
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center black-spot">
+                    41
+                </div>
+                <div class="col-sm py-2 px-md-3 text-center desired-state">
+                    50
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
+
 </html>

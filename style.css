@@ -1,0 +1,20 @@
+.desired-state, .start-state {
+    background-color: #00ff00;
+}
+
+.black-spot{
+    color: white;
+    background-color: #000000;
+}
+
+.dark-blue-spot{
+    background-color: #0066cc;
+}
+
+.blue-spot{
+    background-color: #0099ff;
+}
+
+.light-blue-spot{
+    background-color: #99ccff;
+}
