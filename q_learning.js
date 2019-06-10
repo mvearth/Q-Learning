@@ -19,7 +19,7 @@ var grid = startMap();
 var numEpisodes = 100000;
 var maxStepsPerEpisode = 100;
 var learningRate = 0.5;
-var explorationRate = 0.3
+var explorationRate = 0.3;
 
 function startCoordenate() {
     return new Coordinate(0, 0);
