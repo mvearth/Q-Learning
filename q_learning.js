@@ -16,7 +16,7 @@ class Coordinate {
 var q = startQ();
 var grid = startMap();
 
-var numEpisodes = 100000;
+var numEpisodes = 3000;
 var maxStepsPerEpisode = 100;
 var learningRate = 0.5;
 var explorationRate = 0.3;
@@ -36,8 +36,10 @@ function startQ() {
 }
 
 function prinQ() {
-    for (i = 1; i <= 50; i++)
+    for (i = 1; i <= 50; i++){
+        console.log(i);
         console.log(q[i]);
+    }
 }
 
 function startMap() {
@@ -123,66 +125,24 @@ function range(start, end) {
     return ans;
 }
 
-function getRandomAction(currentCoordinate) {
-    var actionRangeEnd = 4;
-    var possibleActions = [0, 1, 2, 3]
-
-    if (currentCoordinate.X === 0 && currentCoordinate.Y === 0) {
-        possibleActions = [0, 2];
-        actionRangeEnd = 2;
-    }
-    else if (currentCoordinate.X === 0 && currentCoordinate.Y === 4) {
-        possibleActions = [1, 2];
-        actionRangeEnd = 2;
-    }
-    else if (currentCoordinate.X === 9 && currentCoordinate.Y === 4) {
-        possibleActions = [1, 3];
-        actionRangeEnd = 2;
-    }
-    else if (currentCoordinate.X === 9 && currentCoordinate.Y === 0) {
-        possibleActions = [0, 3];
-        actionRangeEnd = 2;
-    }
-    else if (currentCoordinate.Y === 0) {
-        possibleActions = [0, 2, 3];
-        actionRangeEnd = 3;
-    }
-    else if (currentCoordinate.X === 0) {
-        possibleActions = [0, 1, 2];
-        actionRangeEnd = 3;
-    }
-    else if (currentCoordinate.Y === 4) {
-        possibleActions = [1, 2, 3];
-        actionRangeEnd = 3;
-    }
-    else if (currentCoordinate.X === 9) {
-        possibleActions = [0, 1, 3];
-        actionRangeEnd = 3;
-    }
-
-    return possibleActions[Math.floor(Math.random() * actionRangeEnd)];
-}
-
 function takeOneStep(currentCoordinate, action) {
     var nextCoordinate = move(currentCoordinate, action);
 
     var reward = getReward(nextCoordinate);
 
-    var nextState = currentCoordinate;
-
-    var invalidPath = false;
-
-    if (nextCoordinate.X < 0 || nextCoordinate.Y < 0 || nextCoordinate.Y > 4 || nextCoordinate.X > 9)
-        invalidPath = true;
-    else
-        nextState = grid[nextCoordinate.Y][nextCoordinate.X];
-
-    return { nextCoorditate: nextCoordinate, reward: reward, done: nextState === DESIRED_STATE, invalidPath: invalidPath };
+    if (reward === -100){
+        var invalidPath = true;
+        return { invalidPath: invalidPath, reward: reward };
+    }
+    else{
+        var nextState = grid[nextCoordinate.Y][nextCoordinate.X];
+        var invalidPath = false;
+        return { nextCoorditate: nextCoordinate, reward: reward, done: nextState === DESIRED_STATE, invalidPath: invalidPath };
+    }       
 }
 
 for (episode in range(1, numEpisodes)) {
     var coordinate = startCoordenate();
-
     var state = grid[coordinate.Y][coordinate.X];
 
     var done = false;
@@ -203,7 +163,7 @@ for (episode in range(1, numEpisodes)) {
             }
         }
         else
-            action = getRandomAction(coordinate);
+            action = Math.floor(Math.random() * 4);
 
         var stepResult = takeOneStep(coordinate, action);
 
