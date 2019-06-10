@@ -16,7 +16,7 @@ class Coordinate {
 var q = startQ();
 var grid = startMap();
 
-var numEpisodes = 3000;
+var numEpisodes = 10000;
 var maxStepsPerEpisode = 100;
 var learningRate = 0.5;
 var explorationRate = 0.3;
@@ -35,7 +35,7 @@ function startQ() {
     return newQ;
 }
 
-function prinQ() {
+function printQ() {
     for (i = 1; i <= 50; i++){
         console.log(i);
         console.log(q[i]);
@@ -186,4 +186,4 @@ for (episode in range(1, numEpisodes)) {
     }
 }
 
-prinQ();
+printQ();
