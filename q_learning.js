@@ -16,7 +16,7 @@ class Coordinate {
 var q = startQ();
 var grid = startMap();
 
-var numEpisodes = 10000;
+var numEpisodes = 1;
 var maxStepsPerEpisode = 100;
 var learningRate = 0.5;
 var explorationRate = 0.3;
@@ -36,9 +36,20 @@ function startQ() {
 }
 
 function printQ() {
-    for (i = 1; i <= 50; i++){
+    for (i = 1; i <= 50; i++) {
         console.log(i);
         console.log(q[i]);
+    }
+}
+
+function updateInterface(item) {
+    var element = document.getElementById(item)
+
+    if (window.getComputedStyle(element).visibility === "hidden") {
+        element.style.visibility = "visible";
+    }
+    else {
+        element.style.visibility = "hidden";
     }
 }
 
@@ -130,58 +141,62 @@ function takeOneStep(currentCoordinate, action) {
 
     var reward = getReward(nextCoordinate);
 
-    if (reward === -100){
+    if (reward === -100) {
         var invalidPath = true;
         return { invalidPath: invalidPath, reward: reward };
     }
-    else{
+    else {
         var nextState = grid[nextCoordinate.Y][nextCoordinate.X];
         var invalidPath = false;
         return { nextCoorditate: nextCoordinate, reward: reward, done: nextState === DESIRED_STATE, invalidPath: invalidPath };
-    }       
+    }
 }
 
-for (episode in range(1, numEpisodes)) {
-    var coordinate = startCoordenate();
-    var state = grid[coordinate.Y][coordinate.X];
+function startQLearning() {
+    for (episode in range(1, numEpisodes)) {
+        var coordinate = startCoordenate();
+        var state = grid[coordinate.Y][coordinate.X];
 
-    var done = false;
+        var done = false;
 
-    for (step in range(1, maxStepsPerEpisode)) {
+        for (step in range(1, maxStepsPerEpisode)) {
 
-        var action;
+            var action;
 
-        explorationRateThreshold = Math.random();
+            explorationRateThreshold = Math.random();
 
-        if (explorationRateThreshold > explorationRate) {
-            var maxValue = Math.max.apply(null, q[state])
+            if (explorationRateThreshold > explorationRate) {
+                var maxValue = Math.max.apply(null, q[state])
 
-            for (var i = 0; i < q[state].length; i++) {
-                if (q[state][i] === maxValue){
-                    action = i;
-                    break;
+                for (var i = 0; i < q[state].length; i++) {
+                    if (q[state][i] === maxValue) {
+                        action = i;
+                        break;
+                    }
                 }
             }
+            else
+                action = Math.floor(Math.random() * 4);
+
+            var stepResult = takeOneStep(coordinate, action);
+
+            if (stepResult.invalidPath) {
+                q[state][action] = stepResult.reward;
+                break;
+            }
+
+            var nextState = grid[stepResult.nextCoorditate.Y][stepResult.nextCoorditate.X];
+
+            updateInterface(nextState)
+
+            q[state][action] = stepResult.reward + (learningRate * Math.max.apply(null, q[nextState]));
+
+            coordinate = stepResult.nextCoorditate;
+            state = nextState;
+
+            if (stepResult.done)
+                break;
         }
-        else
-            action = Math.floor(Math.random() * 4);
-
-        var stepResult = takeOneStep(coordinate, action);
-
-        if (stepResult.invalidPath) {
-            q[state][action] = stepResult.reward;
-            break;
-        }
-
-        var nextState = grid[stepResult.nextCoorditate.Y][stepResult.nextCoorditate.X];
-
-        q[state][action] = stepResult.reward + (learningRate * Math.max.apply(null, q[nextState]));
-
-        coordinate = stepResult.nextCoorditate;
-        state = nextState;
-
-        if (stepResult.done)
-            break;
     }
 }
 
