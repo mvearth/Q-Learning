@@ -13,6 +13,63 @@
 </head>
 
 <body>
+
+    <div class="col-md-12 align-self-center">
+
+        <div class="card">
+
+            <div class="card-body text-dark">
+
+                <form>
+
+                    <div class="form-group">
+                        <label for="numEpisodes">Number of episodes</label> <input class="form-control" id="numEpisodes"
+                            placeholder="" type="number" value="10000" />
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="maxStepsPerEpisode">Steps per episode</label> <input class="form-control"
+                            id="maxStepsPerEpisode" placeholder="Steps per episode" type="number" value="100" />
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="learningRate">Learning rate</label><input class="form-control" id="learningRate"
+                            placeholder="Learning rate" type="number" value="0.5" />
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="explorationRate">Exploration rate</label><input class="form-control"
+                            id="explorationRate" placeholder="Exploration rate" type="number" value="0.3" />
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="speed">Speed(ms)</label><input class="form-control" id="speed"
+                            placeholder="Speed(ms)" type="number" value="20" />
+
+
+                    </div>
+
+                    <button id="startButton" type="submit" class="btn btn-success btn-block btn-lg mb-2"
+                        onclick="startQLearning()">Start</button>
+
+                    <button id="bestWayButton" class="btn btn-success btn-block btn-lg mb-2" type="submit" disabled
+                        onclick="printBestWay()">Print best way</button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
     <div class="container">
         <div class="row">
             <div class="col-sm py-2 px-md-3 text-center dark-blue-spot">
@@ -225,7 +282,6 @@
             </div>
         </div>
     </div>
-    <button id="startButton" type="submit" onclick="startQLearning()">Start</button>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

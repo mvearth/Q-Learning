@@ -20,8 +20,10 @@ var numEpisodes = 10000;
 var maxStepsPerEpisode = 100;
 var learningRate = 0.5;
 var explorationRate = 0.3;
+var speed = 20;
+var running = false;
 
-function startCoordenate() {
+function startCoordinate() {
     return new Coordinate(0, 0);
 }
 
@@ -42,15 +44,20 @@ function printQ() {
     }
 }
 
-function updateInterface(item) {
-    var element = document.getElementById(item)
-
-    if (window.getComputedStyle(element).visibility === "hidden") {
-        element.style.visibility = "visible";
-    }
-    else {
+function hideAllStates() {
+    for (var i = 1; i < 51; i++) {
+        var element = document.getElementById(i)
         element.style.visibility = "hidden";
     }
+}
+
+function clearQ() {
+    q = startQ();
+}
+
+function showState(item) {
+    var element = document.getElementById(item)
+    element.style.visibility = "visible";
 }
 
 function startMap() {
@@ -152,16 +159,30 @@ function takeOneStep(currentCoordinate, action) {
     }
 }
 
-function startQLearning() {
+async function startQLearning() {
+    if (running)
+        return;
+
+    document.getElementById("startButton").disabled = true;
+    clearQ();
+    running = true;
+
+    numEpisodes = document.getElementById("numEpisodes").value;
+    maxStepsPerEpisode = document.getElementById("maxStepsPerEpisode").value;
+    learningRate = document.getElementById("learningRate").value;
+    explorationRate = document.getElementById("explorationRate").value;
+    speed = document.getElementById("speed").value;
+
     for (episode in range(1, numEpisodes)) {
-        var coordinate = startCoordenate();
+        var coordinate = startCoordinate();
         var state = grid[coordinate.Y][coordinate.X];
 
         var done = false;
 
         for (step in range(1, maxStepsPerEpisode)) {
+            showState(state);
 
-            updateInterface(state)
+            await sleep();
 
             var action;
 
@@ -189,8 +210,6 @@ function startQLearning() {
 
             var nextState = grid[stepResult.nextCoorditate.Y][stepResult.nextCoorditate.X];
 
-            updateInterface(state)
-
             q[state][action] = stepResult.reward + (learningRate * Math.max.apply(null, q[nextState]));
 
             coordinate = stepResult.nextCoorditate;
@@ -200,8 +219,51 @@ function startQLearning() {
                 break;
         }
 
-        
+        hideAllStates();
     }
+
+    printQ();
+
+    running = false;
+
+    document.getElementById("bestWayButton").disabled = false;
+    document.getElementById("startButton").disabled = false;
 }
 
-printQ();
+function sleep() {
+    return new Promise(resolve => setTimeout(resolve, speed));
+}
+
+function printBestWay() {
+
+    if (running)
+        return;
+
+    hideAllStates();
+
+    coordinate = startCoordinate();
+    var state = grid[coordinate.Y][coordinate.X];
+
+    var done = false;
+
+    while (!done) {
+        showState(state);
+
+        var maxValue = Math.max.apply(null, q[state])
+
+        for (var i = 1; i < q[state].length; i++) {
+            if (q[state][i] === maxValue) {
+                var nextCoordinate = move(coordinate, i);
+                coordinate = nextCoordinate;
+                break;
+            }
+        }
+
+        state = grid[coordinate.Y][coordinate.X];
+
+        if (state === DESIRED_STATE) {
+            done = true;
+            showState(state);
+        }
+    }
+}  
