@@ -16,7 +16,7 @@ class Coordinate {
 var q = startQ();
 var grid = startMap();
 
-var numEpisodes = 1;
+var numEpisodes = 10000;
 var maxStepsPerEpisode = 100;
 var learningRate = 0.5;
 var explorationRate = 0.3;
@@ -161,6 +161,8 @@ function startQLearning() {
 
         for (step in range(1, maxStepsPerEpisode)) {
 
+            updateInterface(state)
+
             var action;
 
             explorationRateThreshold = Math.random();
@@ -187,7 +189,7 @@ function startQLearning() {
 
             var nextState = grid[stepResult.nextCoorditate.Y][stepResult.nextCoorditate.X];
 
-            updateInterface(nextState)
+            updateInterface(state)
 
             q[state][action] = stepResult.reward + (learningRate * Math.max.apply(null, q[nextState]));
 
@@ -197,6 +199,8 @@ function startQLearning() {
             if (stepResult.done)
                 break;
         }
+
+        
     }
 }
 
