@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="wth=device-wth, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Q-Learning</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -14,7 +14,7 @@
 
 <body>
 
-    <div class="col-md-12 align-self-center">
+    <div class="col-md-12 align-self-center" sty>
 
         <div class="card">
 
@@ -24,7 +24,7 @@
 
                     <div class="form-group">
                         <label for="numEpisodes">Number of episodes</label> <input class="form-control" id="numEpisodes"
-                            placeholder="" type="number" value="10000" />
+                            placeholder="" type="number" value="35" />
 
                     </div>
 
@@ -51,15 +51,15 @@
                     <div class="form-group">
 
                         <label for="speed">Speed(ms)</label><input class="form-control" id="speed"
-                            placeholder="Speed(ms)" type="number" value="20" />
+                            placeholder="Speed(ms)" type="number" value="0" />
 
 
                     </div>
 
-                    <button id="startButton" type="submit" class="btn btn-success btn-block btn-lg mb-2"
+                    <button id="startButton" class="btn btn-success btn-block btn-lg mb-2" type="button"
                         onclick="startQLearning()">Start</button>
 
-                    <button id="bestWayButton" class="btn btn-success btn-block btn-lg mb-2" type="submit" disabled
+                    <button id="bestWayButton" class="btn btn-success btn-block btn-lg mb-2" type="button"
                         onclick="printBestWay()">Print best way</button>
 
                 </form>

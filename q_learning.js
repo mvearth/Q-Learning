@@ -120,8 +120,12 @@ function move(currentCoordinate, direction) {
     return new Coordinate(x, y);
 }
 
+function isInvalidCoordinate(currentCoordinate) {
+    return currentCoordinate.X < 0 || currentCoordinate.Y < 0 || currentCoordinate.Y > 4 || currentCoordinate.X > 9
+}
+
 function getReward(currentCoordinate) {
-    if (currentCoordinate.X < 0 || currentCoordinate.Y < 0 || currentCoordinate.Y > 4 || currentCoordinate.X > 9)
+    if (isInvalidCoordinate(currentCoordinate))
         return -100;
 
     var state = grid[currentCoordinate.Y][currentCoordinate.X];
@@ -160,12 +164,9 @@ function takeOneStep(currentCoordinate, action) {
 }
 
 async function startQLearning() {
-    if (running)
-        return;
-
     document.getElementById("startButton").disabled = true;
     clearQ();
-    running = true;
+    hideAllStates();
 
     numEpisodes = document.getElementById("numEpisodes").value;
     maxStepsPerEpisode = document.getElementById("maxStepsPerEpisode").value;
@@ -173,15 +174,22 @@ async function startQLearning() {
     explorationRate = document.getElementById("explorationRate").value;
     speed = document.getElementById("speed").value;
 
+    var count = 0;  
+    var lastEpisode = 0;
+
     for (episode in range(1, numEpisodes)) {
+
+        var changesQ = false;
+
+        if (count == 5)
+            break;
+
         var coordinate = startCoordinate();
         var state = grid[coordinate.Y][coordinate.X];
 
-        var done = false;
+        showState(state);
 
         for (step in range(1, maxStepsPerEpisode)) {
-            showState(state);
-
             await sleep();
 
             var action;
@@ -205,26 +213,40 @@ async function startQLearning() {
 
             if (stepResult.invalidPath) {
                 q[state][action] = stepResult.reward;
-                break;
+                continue;
             }
 
             var nextState = grid[stepResult.nextCoorditate.Y][stepResult.nextCoorditate.X];
 
-            q[state][action] = stepResult.reward + (learningRate * Math.max.apply(null, q[nextState]));
+            var possibleNewQValue = stepResult.reward + (learningRate * Math.max.apply(null, q[nextState]));
+
+            var actualQValue = q[state][action];
+
+            if(possibleNewQValue != actualQValue){
+                q[state][action] = possibleNewQValue;
+                changesQ = true;
+            }
 
             coordinate = stepResult.nextCoorditate;
             state = nextState;
 
-            if (stepResult.done)
+            showState(state);
+
+            if(stepResult.done)
                 break;
         }
 
+        if (!changesQ)
+            count++;
+
         hideAllStates();
+
+        lastEpisode = episode;
     }
 
     printQ();
 
-    running = false;
+    console.log(lastEpisode);
 
     document.getElementById("bestWayButton").disabled = false;
     document.getElementById("startButton").disabled = false;
@@ -246,18 +268,37 @@ function printBestWay() {
 
     var done = false;
 
+    var repetitionCount = 0;
+
+    var previousState = state;
+
     while (!done) {
         showState(state);
 
         var maxValue = Math.max.apply(null, q[state])
 
-        for (var i = 1; i < q[state].length; i++) {
+        var maxes = [];
+
+        for (var i = 0; i < q[state].length; i++) {
             if (q[state][i] === maxValue) {
-                var nextCoordinate = move(coordinate, i);
-                coordinate = nextCoordinate;
-                break;
+                maxes.push(i);
             }
         }
+
+        var indices = Math.floor(Math.random() * maxes.length);
+
+        var nextMove = maxes[indices];
+
+        var nextCoordinate = move(coordinate, nextMove);
+        coordinate = nextCoordinate;
+
+        if (grid[coordinate.Y][coordinate.X] === previousState)
+            repetitionCount++;
+
+        if (repetitionCount === 5)
+            break;
+
+        previousState = state;
 
         state = grid[coordinate.Y][coordinate.X];
 
